@@ -130,6 +130,87 @@ export default function MePage() {
     return null;
   }
 
+  async function submitDados(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSaveMsg(null);
+    try {
+      const access = localStorage.getItem('access');
+      if (!access) { setSaveMsg('Você precisa estar logado.'); return; }
+      const fd = new FormData(e.currentTarget);
+      const payload: any = {
+        username: String(fd.get('username') || '').trim(),
+        email: String(fd.get('email') || '').trim(),
+        document_id: String(fd.get('document_id') || '').trim(),
+        phone: String(fd.get('phone') || '').trim(),
+        address: String(fd.get('address') || '').trim(),
+      };
+      const res = await fetch(`${API_BASE}/api/auth/me`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access}` },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.detail || 'Falha ao salvar');
+      setSaveMsg('Dados salvos com sucesso.');
+      setUser(data);
+    } catch (err: any) {
+      setSaveMsg(err.message || 'Erro ao salvar');
+    }
+  }
+
+  async function submitPrefs(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      const access = localStorage.getItem('access');
+      if (!access) { return; }
+      const fd = new FormData(e.currentTarget);
+      const preferences = {
+        pref_news: fd.get('pref_news') ? true : false,
+        pref_content_notifications: fd.get('pref_content_notifications') ? true : false,
+      } as any;
+      const res = await fetch(`${API_BASE}/api/auth/me`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access}` },
+        body: JSON.stringify({ preferences }),
+      });
+      if (!res.ok) {
+        const txt = await res.text();
+        throw new Error(txt || 'Falha ao salvar preferências');
+      }
+      setSaveMsg('Preferências salvas.');
+    } catch (err: any) {
+      setSaveMsg(err.message || 'Erro ao salvar preferências');
+    }
+  }
+
+  async function submitPassword(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setPwdErr(null); setPwdMsg(null);
+    try {
+      const access = localStorage.getItem('access');
+      if (!access) { setPwdErr('Você precisa estar logado.'); return; }
+      const fd = new FormData(e.currentTarget);
+      const old_password = String(fd.get('old_password') || '');
+      const new_password = String(fd.get('new_password') || '');
+      const confirm = String(fd.get('confirm') || '');
+      if (new_password !== confirm) {
+        setPwdErr('A confirmação não confere.');
+        return;
+      }
+      const res = await fetch(`${API_BASE}/api/auth/change-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access}` },
+        body: JSON.stringify({ old_password, new_password }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.detail || 'Falha ao alterar senha');
+      setPwdMsg('Senha atualizada com sucesso.');
+      (e.currentTarget as HTMLFormElement).reset();
+    } catch (err: any) {
+      setPwdErr(err.message || 'Erro ao alterar senha');
+    }
+  }
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="brand-accent" />
@@ -174,47 +255,50 @@ export default function MePage() {
           <section className="space-y-3" id="dados">
             <h2 className="text-xl font-semibold">Meus dados</h2>
             {saveMsg && <p className="text-green-700 text-sm">{saveMsg}</p>}
-            <div className="brand-card p-4">
+            <form className="brand-card p-4" onSubmit={submitDados}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm text-gray-700">Nome</label>
-                  <input className="w-full border rounded p-2" defaultValue={user?.username || ''} placeholder="Seu nome" />
+                  <input name="username" className="w-full border rounded p-2" defaultValue={user?.username || ''} placeholder="Seu nome" />
                 </div>
                 <div>
                   <label className="block text-sm text-gray-700">E-mail</label>
-                  <input type="email" className="w-full border rounded p-2" defaultValue={user?.email || ''} placeholder="voce@exemplo.com" />
+                  <input name="email" type="email" className="w-full border rounded p-2" defaultValue={user?.email || ''} placeholder="voce@exemplo.com" />
                 </div>
                 <div>
                   <label className="block text-sm text-gray-700">CPF</label>
-                  <input className="w-full border rounded p-2" placeholder="000.000.000-00" />
+                  <input name="document_id" className="w-full border rounded p-2" placeholder="000.000.000-00" />
                 </div>
                 <div>
                   <label className="block text-sm text-gray-700">Telefone</label>
-                  <input className="w-full border rounded p-2" placeholder="(00) 00000-0000" />
+                  <input name="phone" className="w-full border rounded p-2" placeholder="(00) 00000-0000" />
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-sm text-gray-700">Endereço</label>
-                  <input className="w-full border rounded p-2" placeholder="Rua, número, complemento" />
+                  <input name="address" className="w-full border rounded p-2" placeholder="Rua, número, complemento" />
                 </div>
               </div>
               <div className="mt-3">
-                <button type="button" className="px-4 py-2 rounded bg-blue-600 text-white" onClick={() => setSaveMsg('Dados salvos (visual).')}>Salvar</button>
+                <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white">Salvar</button>
               </div>
-            </div>
+            </form>
           </section>
 
           <section className="space-y-3" id="config">
             <h2 className="text-xl font-semibold">Configurações</h2>
-            <div className="brand-card p-4 text-sm text-gray-800">
+            <form className="brand-card p-4 text-sm text-gray-800" onSubmit={submitPrefs}>
               <label className="flex items-center gap-2">
-                <input type="checkbox" className="h-4 w-4" />
+                <input name="pref_news" type="checkbox" className="h-4 w-4" />
                 Receber emails sobre novidades
               </label>
               <label className="flex items-center gap-2 mt-2">
-                <input type="checkbox" className="h-4 w-4" />
+                <input name="pref_content_notifications" type="checkbox" className="h-4 w-4" />
                 Receber notificações de novos conteúdos
               </label>
-            </div>
+              <div className="mt-3">
+                <button type="submit" className="px-3 py-1 rounded bg-blue-600 text-white">Salvar preferências</button>
+              </div>
+            </form>
           </section>
 
           <section className="space-y-3" id="senha">
@@ -223,19 +307,19 @@ export default function MePage() {
             {pwdErr && <p className="text-red-700 text-sm">{pwdErr}</p>}
             <form
               className="brand-card p-4 grid grid-cols-1 md:grid-cols-3 gap-3"
-              onSubmit={(e) => { e.preventDefault(); setPwdErr(null); setPwdMsg('Funcionalidade visual - integração pendente.'); }}
+              onSubmit={submitPassword}
             >
               <div>
                 <label className="block text-sm text-gray-700">Senha atual</label>
-                <input type="password" className="w-full border rounded p-2" />
+                <input name="old_password" type="password" className="w-full border rounded p-2" />
               </div>
               <div>
                 <label className="block text-sm text-gray-700">Nova senha</label>
-                <input type="password" className="w-full border rounded p-2" />
+                <input name="new_password" type="password" className="w-full border rounded p-2" />
               </div>
               <div>
                 <label className="block text-sm text-gray-700">Confirmar nova senha</label>
-                <input type="password" className="w-full border rounded p-2" />
+                <input name="confirm" type="password" className="w-full border rounded p-2" />
               </div>
               <div className="md:col-span-3">
                 <button type="submit" className="px-4 py-2 rounded bg-emerald-600 text-white">Atualizar senha</button>
