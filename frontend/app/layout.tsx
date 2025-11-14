@@ -8,7 +8,7 @@ import Logo from "./img/logo/logo.png";
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className="min-h-screen bg-white text-gray-900">
+      <body className="min-h-screen flex flex-col bg-white text-gray-900">
         <header className="bg-gradient-to-b from-[#0b1b34] to-[#0d2a52] text-white">
           <div className="container mx-auto flex items-center justify-between py-4">
             <a href="/" aria-label="Bee U Bilingual School" className="inline-flex items-center">
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </nav>
           </div>
         </header>
-        <main className="container mx-auto p-4">{children}</main>
+        <main className="container mx-auto p-4 flex-1 w-full">{children}</main>
         <footer className="bg-gray-900 text-gray-200 mt-10">
           <div className="container mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
             <div>

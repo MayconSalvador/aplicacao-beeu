@@ -15,6 +15,9 @@ export default function MePage() {
   const [isInfoOpen, setIsInfoOpen] = useState<boolean>(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const [showOnlyPedidos, setShowOnlyPedidos] = useState<boolean>(false);
+  const [saveMsg, setSaveMsg] = useState<string | null>(null);
+  const [pwdMsg, setPwdMsg] = useState<string | null>(null);
+  const [pwdErr, setPwdErr] = useState<string | null>(null);
 
   useEffect(() => {
     const access = localStorage.getItem('access');
@@ -167,6 +170,78 @@ export default function MePage() {
             )}
           </div>
           {error && <p className="text-red-600">{error}</p>}
+
+          <section className="space-y-3" id="dados">
+            <h2 className="text-xl font-semibold">Meus dados</h2>
+            {saveMsg && <p className="text-green-700 text-sm">{saveMsg}</p>}
+            <div className="brand-card p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm text-gray-700">Nome</label>
+                  <input className="w-full border rounded p-2" defaultValue={user?.username || ''} placeholder="Seu nome" />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-700">E-mail</label>
+                  <input type="email" className="w-full border rounded p-2" defaultValue={user?.email || ''} placeholder="voce@exemplo.com" />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-700">CPF</label>
+                  <input className="w-full border rounded p-2" placeholder="000.000.000-00" />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-700">Telefone</label>
+                  <input className="w-full border rounded p-2" placeholder="(00) 00000-0000" />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm text-gray-700">Endereço</label>
+                  <input className="w-full border rounded p-2" placeholder="Rua, número, complemento" />
+                </div>
+              </div>
+              <div className="mt-3">
+                <button type="button" className="px-4 py-2 rounded bg-blue-600 text-white" onClick={() => setSaveMsg('Dados salvos (visual).')}>Salvar</button>
+              </div>
+            </div>
+          </section>
+
+          <section className="space-y-3" id="config">
+            <h2 className="text-xl font-semibold">Configurações</h2>
+            <div className="brand-card p-4 text-sm text-gray-800">
+              <label className="flex items-center gap-2">
+                <input type="checkbox" className="h-4 w-4" />
+                Receber emails sobre novidades
+              </label>
+              <label className="flex items-center gap-2 mt-2">
+                <input type="checkbox" className="h-4 w-4" />
+                Receber notificações de novos conteúdos
+              </label>
+            </div>
+          </section>
+
+          <section className="space-y-3" id="senha">
+            <h2 className="text-xl font-semibold">Alterar senha</h2>
+            {pwdMsg && <p className="text-green-700 text-sm">{pwdMsg}</p>}
+            {pwdErr && <p className="text-red-700 text-sm">{pwdErr}</p>}
+            <form
+              className="brand-card p-4 grid grid-cols-1 md:grid-cols-3 gap-3"
+              onSubmit={(e) => { e.preventDefault(); setPwdErr(null); setPwdMsg('Funcionalidade visual - integração pendente.'); }}
+            >
+              <div>
+                <label className="block text-sm text-gray-700">Senha atual</label>
+                <input type="password" className="w-full border rounded p-2" />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-700">Nova senha</label>
+                <input type="password" className="w-full border rounded p-2" />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-700">Confirmar nova senha</label>
+                <input type="password" className="w-full border rounded p-2" />
+              </div>
+              <div className="md:col-span-3">
+                <button type="submit" className="px-4 py-2 rounded bg-emerald-600 text-white">Atualizar senha</button>
+              </div>
+            </form>
+          </section>
           <section className="space-y-3" id="cursos-ativos">
             <h2 className="text-xl font-semibold">Meus cursos ativos</h2>
             {enrollmentsError && <p className="text-red-600 text-sm">{enrollmentsError}</p>}
