@@ -15,72 +15,43 @@ export default async function Home() {
 
   return (
     <div className="space-y-12">
-      {/* Hero com identidade em vermelho/azul */}
-      <section className="rounded-xl overflow-hidden">
-        <div className="bg-gradient-to-r from-red-600 to-blue-600 p-10 md:p-14 text-white">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">Beeuschool</h1>
-            <p className="mt-3 md:mt-4 text-lg md:text-xl opacity-90">
-              Escola digital de inglês com foco em prática, materiais organizados e acompanhamento humano.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a href="/cursos" className="inline-flex items-center px-4 py-2 rounded bg-white text-red-700 hover:bg-red-50 font-medium">
-                Conheça os cursos
-              </a>
-              <a href="/conteudos" className="inline-flex items-center px-4 py-2 rounded bg-blue-700 hover:bg-blue-800 font-medium">
-                Ver conteúdos
-              </a>
+      <section className="overflow-hidden anim-fade-in">
+        <div className="relative bg-gradient-to-b from-[#0b1b34] to-[#0d2a52] text-white">
+          <div className="p-10 md:p-16 max-w-3xl">
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight uppercase anim-fade-up">INGLÊS SEM LIMITES</h1>
+            <p className="mt-3 md:mt-4 text-lg md:text-xl opacity-90 anim-fade-up anim-delay-1">Há um mundo para se conquistar e a Bee U está aqui para te ajudar nessa conquista.</p>
+            <div className="mt-6 anim-fade-up anim-delay-2">
+              <a href="/cursos" className="inline-flex items-center px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-600 font-semibold uppercase">COMECE AGORA</a>
             </div>
           </div>
+          <svg aria-hidden="true" viewBox="0 0 1440 140" preserveAspectRatio="none" className="w-full h-[80px] md:h-[120px] text-[#0d2a52]">
+            <path fill="currentColor" d="M0,96L120,90.7C240,85,480,75,720,64C960,53,1200,43,1320,37.3L1440,32L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path>
+          </svg>
         </div>
       </section>
 
-      {/* Introdução curta */}
-      <section className="space-y-3">
-        <h2 className="text-2xl font-bold">Sobre a Beeuschool</h2>
-        <p className="text-gray-700 leading-relaxed">
-          Somos uma escola moderna que combina metodologia clara, prática orientada e tecnologia acessível.
-          Nosso objetivo é tornar o aprendizado de inglês direto, motivador e aplicável no dia a dia.
-        </p>
-      </section>
-
-      {/* Visão, Missão e Meta */}
-      <section className="space-y-6">
-        <h2 className="text-2xl font-bold">Nossa visão, missão e meta</h2>
+      <section className="space-y-6 anim-fade-in">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card padding="lg">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-red-600/90 text-white flex items-center justify-center font-bold">V</div>
-              <h3 className="font-semibold">Visão</h3>
-            </div>
-            <p className="mt-2 text-gray-700 text-sm">
-              Ser referência em ensino de inglês acessível, prático e orientado a resultados.
-            </p>
+          <Card as="a" href="/sobre" padding="lg" title="Sobre nós" className="anim-fade-up">
+            <p className="text-gray-700 text-sm">Conheça o nosso grupo, missão e a essência da Bee U.</p>
           </Card>
-          <Card padding="lg">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">M</div>
-              <h3 className="font-semibold">Missão</h3>
-            </div>
-            <p className="mt-2 text-gray-700 text-sm">
-              Guiar alunos em jornadas claras, com materiais objetivos e apoio contínuo.
-            </p>
+          <Card as="a" href="/abordagem" padding="lg" title="Nossa abordagem" className="anim-fade-up anim-delay-1">
+            <p className="text-gray-700 text-sm">Ensino natural e imersivo, priorizando fala e prática desde o início.</p>
           </Card>
-          <Card padding="lg">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-red-600/90 text-white flex items-center justify-center font-bold">G</div>
-              <h3 className="font-semibold">Meta</h3>
-            </div>
-            <p className="mt-2 text-gray-700 text-sm">
-              Construir confiança comunicativa: falar, entender e participar em inglês com segurança.
-            </p>
+          <Card as="a" href="/professores" padding="lg" title="Professores" className="anim-fade-up anim-delay-2">
+            <p className="text-gray-700 text-sm">O time que tornou o ensino mais eficiente e humano.</p>
           </Card>
         </div>
       </section>
 
-      {/* Depoimentos fictícios */}
-      <section className="space-y-6">
-        <h2 className="text-2xl font-bold">Depoimentos</h2>
+      
+
+      <section className="space-y-6 anim-fade-in">
+        <div>
+          <h2 className="text-2xl font-bold anim-fade-up">Depoimentos</h2>
+          <p className="text-gray-600 anim-fade-up anim-delay-1">Algumas opiniões de alunos</p>
+          <div className="brand-accent w-16" />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
             {
@@ -102,7 +73,7 @@ export default async function Home() {
               text: "O foco em comunicação no dia a dia fez diferença. Estou mais confiante em reuniões e viagens.",
             },
           ].map((t, idx) => (
-            <Card padding="lg" key={idx}>
+            <Card padding="lg" key={t.name} className={`anim-fade-up ${idx === 1 ? 'anim-delay-1' : idx === 2 ? 'anim-delay-2' : ''}`}>
               <div className="flex items-center gap-3">
                 <div className={`h-10 w-10 rounded-full ${t.color} text-white flex items-center justify-center font-bold`}>
                   {t.name.split(' ')[0][0]}
@@ -118,17 +89,18 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Cursos em destaque (mantidos) */}
-      <section>
+      
+
+      <section className="anim-fade-in">
         <h2 className="text-2xl font-bold mb-4">Cursos em destaque</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {(courses || []).map((c: any) => {
+          {(courses || []).map((c: any, idx: number) => {
             const rawDesc = (c?.description || '').trim();
             const fallbackDesc = `Domine o nível ${c?.level} com prática guiada, materiais claros e acompanhamento humano.`;
             const descBase = rawDesc.length > 0 ? rawDesc : fallbackDesc;
             const desc = descBase.length > 160 ? `${descBase.slice(0, 157)}...` : descBase;
             return (
-              <Card as="a" href={`/curso/${c.slug}`} accent padding="md" title={c.title} actions={<span className="brand-badge bg-gray-100 text-gray-700">Nível {c.level}</span>}>
+              <Card key={c?.slug || c?.id || idx} as="a" href={`/curso/${c.slug}`} accent padding="md" title={c.title} actions={<span className="brand-badge bg-gray-100 text-gray-700">Nível {c.level}</span>} className={`anim-fade-up ${idx % 2 === 1 ? 'anim-delay-1' : ''}`}>
                 <p className="text-sm text-gray-700 leading-relaxed">{desc}</p>
                 <div className="flex flex-wrap gap-2 mt-1">
                   <span className="brand-badge badge-red">Prática guiada</span>
