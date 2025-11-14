@@ -84,6 +84,9 @@ services:
       API_BASE_SERVER: http://django:8000
     ports:
       - "3000:3000"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
     command: ["npm", "run", "dev"]
 
 volumes:

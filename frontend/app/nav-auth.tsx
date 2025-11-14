@@ -70,9 +70,7 @@ export default function NavAuth() {
             </a>
           )}
         </>
-      ) : (
-        <a href="/login">Login</a>
-      )}
+      ) : null}
     </div>
   );
 }

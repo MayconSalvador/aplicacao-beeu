@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 html, body { height: 100%; }
+html { scroll-behavior: smooth; }
 
 /* Design Tokens e utilitários compartilhados */
 @layer base {
@@ -43,4 +44,17 @@ html, body { height: 100%; }
   .badge-purple { @apply bg-purple-100 text-purple-700; }
   .badge-gray { @apply bg-gray-100 text-gray-700; }
   .badge-orange { @apply bg-orange-100 text-orange-700; }
+}
+
+@layer utilities {
+  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px) } to { opacity: 1; transform: translateY(0) } }
+  .anim-fade-in { animation: fadeIn 700ms ease both }
+  .anim-fade-up { animation: fadeUp 800ms ease both }
+  .anim-delay-1 { animation-delay: .15s }
+  .anim-delay-2 { animation-delay: .30s }
+  .anim-delay-3 { animation-delay: .45s }
+  @media (prefers-reduced-motion: reduce) {
+    .anim-fade-in, .anim-fade-up { animation: none }
+  }
 }
