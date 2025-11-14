@@ -1,14 +1,19 @@
 import "./globals.css";
 import { ReactNode } from "react";
 import NavAuth from "./nav-auth";
+import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import Image from "next/image";
+import Logo from "./img/logo/logo.png";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className="min-h-screen bg-white text-gray-900">
+      <body className="min-h-screen flex flex-col bg-white text-gray-900">
         <header className="bg-gradient-to-b from-[#0b1b34] to-[#0d2a52] text-white">
           <div className="container mx-auto flex items-center justify-between py-4">
-            <a href="/" className="font-semibold tracking-wide">Bee U Bilingual School</a>
+            <a href="/" aria-label="Bee U Bilingual School" className="inline-flex items-center">
+              <Image src={Logo} alt="Bee U Bilingual School" width={140} height={36} priority />
+            </a>
             <nav className="hidden md:flex items-center gap-6 text-sm font-semibold uppercase">
               <a href="/sobre">Sobre</a>
               <a href="/abordagem">Nossa Abordagem</a>
@@ -21,7 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </nav>
           </div>
         </header>
-        <main className="container mx-auto p-4">{children}</main>
+        <main className="container mx-auto p-4 flex-1 w-full">{children}</main>
         <footer className="bg-gray-900 text-gray-200 mt-10">
           <div className="container mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
             <div>
@@ -30,9 +35,18 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <p className="mt-2 text-sm">+55 44 9823-6983</p>
               <p className="text-sm">contato@beeuschool.com.br</p>
               <div className="mt-3 inline-flex gap-4 text-sm">
-                <a className="underline" href="https://www.facebook.com/profile.php?id=100075049137637" target="_blank" rel="noreferrer">Facebook</a>
-                <a className="underline" href="https://api.whatsapp.com/send?phone=554498236983" target="_blank" rel="noreferrer">WhatsApp</a>
-                <a className="underline" href="https://www.instagram.com/bee.u.school/" target="_blank" rel="noreferrer">Instagram</a>
+                <a className="inline-flex items-center gap-2 underline" href="https://www.facebook.com/profile.php?id=100075049137637" target="_blank" rel="noreferrer">
+                  <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#1877F2] text-white"><FaFacebookF className="w-3.5 h-3.5" aria-hidden /></span>
+                  Facebook
+                </a>
+                <a className="inline-flex items-center gap-2 underline" href="https://api.whatsapp.com/send?phone=554498236983" target="_blank" rel="noreferrer">
+                  <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#25D366] text-white"><FaWhatsapp className="w-4 h-4" aria-hidden /></span>
+                  WhatsApp
+                </a>
+                <a className="inline-flex items-center gap-2 underline" href="https://www.instagram.com/bee.u.school/" target="_blank" rel="noreferrer">
+                  <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white"><FaInstagram className="w-3.5 h-3.5" aria-hidden /></span>
+                  Instagram
+                </a>
               </div>
             </div>
             <div>
