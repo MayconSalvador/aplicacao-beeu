@@ -1,4 +1,8 @@
 import Card from "../components/ui/Card";
+import Image from "next/image";
+import Avatar1 from "../img/avatar/andrew.png";
+import Avatar2 from "../img/avatar/gabi.png";
+import Avatar3 from "../img/avatar/bruno.png";
 
 const TESTIMONIALS = [
   {
@@ -33,9 +37,13 @@ export default function OpinioesPage() {
         {TESTIMONIALS.map((t, idx) => (
           <Card padding="lg" key={t.name} className={`anim-fade-up ${idx === 1 ? 'anim-delay-1' : idx === 2 ? 'anim-delay-2' : ''}`}>
             <div className="flex items-center gap-3">
-              <div className={`h-10 w-10 rounded-full ${t.color} text-white flex items-center justify-center font-bold`}>
-                {t.name.split(' ')[0][0]}
-              </div>
+              {(() => {
+                const avatars = [Avatar1, Avatar2, Avatar3];
+                const src = avatars[idx % avatars.length];
+                return (
+                  <Image src={src} alt={t.name} width={40} height={40} className="rounded-full" />
+                );
+              })()}
               <div>
                 <p className="font-semibold">{t.name}</p>
                 <p className="text-xs text-gray-600">{t.role}</p>
