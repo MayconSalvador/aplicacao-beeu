@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { height: 100%; }
+
+/* Design Tokens e utilitários compartilhados */
+@layer base {
+  :root {
+    --brand-red: #dc2626; /* red-600 */
+    --brand-blue: #2563eb; /* blue-600 */
+    --brand-radius-card: 0.75rem; /* rounded-xl */
+    --brand-shadow-sm: 0 1px 3px rgba(0,0,0,0.15);
+    --brand-shadow-md: 0 6px 16px rgba(0,0,0,0.18);
+  }
+}
+
+@layer components {
+  .brand-accent {
+    height: 0.375rem; /* h-1.5 */
+    background-image: linear-gradient(to right, var(--brand-red), var(--brand-blue));
+    border-radius: 0.375rem; /* rounded */
+  }
+
+  .brand-card {
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(203 213 225 / 0.25); /* slate-300/25 em light; discreto no dark */
+    border-radius: var(--brand-radius-card);
+    overflow: hidden;
+    box-shadow: var(--brand-shadow-sm);
+    transition: box-shadow 160ms ease;
+  }
+  .brand-card:hover { box-shadow: var(--brand-shadow-md); }
+
+  .brand-badge {
+    @apply inline-flex items-center px-2 py-1 text-xs font-medium rounded-full;
+  }
+
+  .badge-red { @apply bg-red-100 text-red-700; }
+  .badge-blue { @apply bg-blue-100 text-blue-700; }
+  .badge-emerald { @apply bg-emerald-100 text-emerald-700; }
+  .badge-purple { @apply bg-purple-100 text-purple-700; }
+  .badge-gray { @apply bg-gray-100 text-gray-700; }
+  .badge-orange { @apply bg-orange-100 text-orange-700; }
+}
