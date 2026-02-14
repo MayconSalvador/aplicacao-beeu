@@ -1,7 +1,7 @@
 import "./globals.css";
 import { ReactNode } from "react";
 import NavAuth from "./nav-auth";
-import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaWhatsapp, FaBriefcase } from "react-icons/fa";
 import Image from "next/image";
 import Logo from "./img/logo/logo.png";
 
@@ -16,13 +16,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </a>
             <nav className="hidden md:flex items-center gap-6 text-sm font-semibold uppercase">
               <a href="/sobre">Sobre</a>
-              <a href="/abordagem">Nossa Abordagem</a>
               <a href="/opinioes">Opiniões</a>
               <a href="/contatos">Contatos</a>
               <a href="/professores">Professores</a>
-              <a href="/trabalhe-conosco">Trabalhe Conosco</a>
-              <a href="/login" className="ml-2 inline-flex items-center px-4 py-2 rounded-full bg-emerald-500 hover:bg-emerald-600">LOGIN</a>
-              <NavAuth />
+              <a href="/login" className="ml-2 inline-flex items-center px-4 py-2 rounded-full bg-emerald-500 hover:bg-emerald-600">Área do Professor</a>
             </nav>
           </div>
         </header>
@@ -46,6 +43,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <a className="inline-flex items-center gap-2 underline" href="https://www.instagram.com/bee.u.school/" target="_blank" rel="noreferrer">
                   <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white"><FaInstagram className="w-3.5 h-3.5" aria-hidden /></span>
                   Instagram
+                </a>
+                <a className="inline-flex items-center gap-2 underline" href="/trabalhe-conosco">
+                  <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-700 text-white"><FaBriefcase className="w-3 h-3" aria-hidden /></span>
+                  Trabalhe Conosco
                 </a>
               </div>
             </div>

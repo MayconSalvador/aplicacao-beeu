@@ -1,0 +1,86 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-beeu_db}
+      POSTGRES_USER: ${POSTGRES_USER:-beeu_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-beeu_password}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U beeu_user -d beeu_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis:/data
+
+  minio:
+    image: minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minio123}
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio:/data
+
+  django:
+    build:
+      context: ../django_core
+      dockerfile: Dockerfile.prod
+    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    environment:
+      DJANGO_SETTINGS_MODULE: core.settings
+      DATABASE_URL: postgres://${POSTGRES_USER:-beeu_user}:${POSTGRES_PASSWORD:-beeu_password}@postgres:5432/${POSTGRES_DB:-beeu_db}
+      REDIS_URL: redis://redis:6379/0
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minio}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minio123}
+      SECRET_KEY: ${SECRET_KEY:-prod-secret-key-change-me}
+      DEBUG: "0"
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-*}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      minio:
+        condition: service_started
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../django_core:/app
+
+  celery:
+    build:
+      context: ../django_core
+      dockerfile: Dockerfile.prod
+    command: celery -A core.celery_app worker --loglevel=info
+    environment:
+      DJANGO_SETTINGS_MODULE: core.settings
+      DATABASE_URL: postgres://${POSTGRES_USER:-beeu_user}:${POSTGRES_PASSWORD:-beeu_password}@postgres:5432/${POSTGRES_DB:-beeu_db}
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: ${SECRET_KEY:-prod-secret-key-change-me}
+      DEBUG: "0"
+    depends_on:
+      django:
+        condition: service_started
+      redis:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.prod
+    environment:
+      NEXT_PUBLIC_API_BASE: ${NEXT_PUBLIC_API_BASE:-http://localhost:8000}
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
+  minio:
+  redis:

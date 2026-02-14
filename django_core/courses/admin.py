@@ -1,11 +1,19 @@
 from django.contrib import admin
-from .models import Course, Module, Lesson, Material
+from .models import Plan, ClassSession
 
-@admin.register(Course)
-class CourseAdmin(admin.ModelAdmin):
-    list_display = ("title", "level", "price_br", "is_active")
-    prepopulated_fields = {"slug": ("title",)}
+@admin.register(Plan)
+class PlanAdmin(admin.ModelAdmin):
+    list_display = ("name", "get_price_display", "created_at")
+    
+    def get_price_display(self, obj):
+        return obj.price
+    get_price_display.short_description = "Valor"
 
-admin.site.register(Module)
-admin.site.register(Lesson)
-admin.site.register(Material)
+@admin.register(ClassSession)
+class ClassSessionAdmin(admin.ModelAdmin):
+    list_display = ("professor", "student", "start_time", "end_time")
+    list_filter = ("professor", "start_time")
+    search_fields = ("professor__username", "student__name")
+
+# Unregister other models if they were automatically registered (or don't register them)
+# Since we are redefining the file, we just don't register Course, Module, Lesson, Material.

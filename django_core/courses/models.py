@@ -1,4 +1,19 @@
 from django.db import models
+from django.conf import settings
+
+
+class Plan(models.Model):
+    name = models.CharField(max_length=200, verbose_name="Nome do Curso/Plano")
+    description = models.TextField(blank=True, verbose_name="Descrição")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Valor")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Plano"
+        verbose_name_plural = "Planos"
 
 
 class Course(models.Model):
@@ -44,3 +59,31 @@ class Material(models.Model):
     file = models.CharField(max_length=255, blank=True, null=True)  # placeholder para S3 key
     description = models.CharField(max_length=255, blank=True)
     visible = models.BooleanField(default=True)
+
+
+class ClassSession(models.Model):
+    professor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="classes_taught",
+        limit_choices_to={"role": "PROFESSOR"},
+        verbose_name="Professor"
+    )
+    student = models.ForeignKey(
+        "users.Student",
+        on_delete=models.CASCADE,
+        related_name="classes_attended",
+        verbose_name="Aluno"
+    )
+    start_time = models.DateTimeField(verbose_name="Início")
+    end_time = models.DateTimeField(verbose_name="Fim")
+    google_event_id = models.CharField(max_length=255, blank=True, null=True, verbose_name="ID Google Calendar")
+    meet_link = models.URLField(blank=True, null=True, verbose_name="Link da Aula (Meet)")
+
+    def __str__(self):
+        return f"{self.professor} - {self.student} ({self.start_time})"
+
+    class Meta:
+        verbose_name = "Aula"
+        verbose_name_plural = "Aulas"
+        ordering = ["-start_time"]
