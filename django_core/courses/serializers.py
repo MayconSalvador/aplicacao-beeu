@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, Module, Lesson, Material
+from .models import Course, Module, Lesson, Material, Plan
 
 
 class MaterialSerializer(serializers.ModelSerializer):
@@ -33,3 +33,9 @@ class CourseSerializer(serializers.ModelSerializer):
             "id", "title", "slug", "description", "level",
             "price_br", "is_active", "syllabus", "thumbnail", "duration_months", "modules"
         ]
+
+
+class PlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
+        fields = ["id", "name", "description", "price"]

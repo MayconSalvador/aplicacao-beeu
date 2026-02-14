@@ -24,9 +24,21 @@ export default function LoginPage() {
         throw new Error('Credenciais inválidas');
       }
       const data = await res.json();
+      
+      // Verify if user is professor or admin
+      const meRes = await fetch(`${API_BASE}/api/auth/me`, {
+        headers: { Authorization: `Bearer ${data.access}` }
+      });
+      const userData = await meRes.json();
+      
+      if (userData.role !== 'PROFESSOR' && userData.role !== 'SUPERUSER' && userData.role !== 'STAFF') {
+         throw new Error('Acesso restrito a professores.');
+      }
+
       localStorage.setItem('access', data.access);
       localStorage.setItem('refresh', data.refresh);
-      window.location.href = '/me';
+      window.dispatchEvent(new Event('access')); // Notify other components
+      window.location.href = '/dashboard';
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login');
     } finally {
@@ -35,11 +47,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto py-10">
       <div className="brand-accent mb-3" />
-      <h1 className="text-2xl font-bold mb-2">Entrar</h1>
-      <p className="text-gray-700 mb-4">Acesse sua conta para acompanhar seus cursos e conteúdos.</p>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <h1 className="text-2xl font-bold mb-2">Área do Professor</h1>
+      <p className="text-gray-700 mb-4">Acesse para gerenciar seus alunos e agenda.</p>
+      <form onSubmit={handleSubmit} className="space-y-4 bg-gray-50 p-6 rounded-lg shadow-sm border">
         <div>
           <label className="block text-sm mb-1">Usuário</label>
           <input

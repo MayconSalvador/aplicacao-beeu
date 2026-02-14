@@ -48,6 +48,8 @@ services:
       - minio
     ports:
       - "8000:8000"
+    volumes:
+      - ../django_core:/app
 
   celery:
     build: ../django_core
@@ -60,6 +62,8 @@ services:
     depends_on:
       - django
       - redis
+    volumes:
+      - ../django_core:/app
 
   fastapi:
     build: ../fastapi_services
